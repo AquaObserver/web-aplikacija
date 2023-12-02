@@ -2,26 +2,13 @@
   box-sizing: border-box;
 }
 
-body {
-  background-color: #EEF5FF;
-}
-
 .center {
   display: flex;
   justify-content: center;
 }
 
 .app-title {
-  color: #A25772;
-  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
-  font-size: 5rem;
-  margin:auto;
-  margin-top: 1rem;
-  margin-bottom: 1rem;
-  padding: 1rem;
-  max-width: 75%;
-  border-radius: 1rem;
-  background-color: #9EB8D9;
+  margin-bottom: 2rem;
 }
 
 .bucket {

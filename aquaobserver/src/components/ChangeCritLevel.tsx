@@ -4,14 +4,17 @@ import { Button, Modal, Form } from "react-bootstrap";
 interface Props {
   showModal: boolean;
   handleClose: () => void;
+  handleSubmit: () => void;
   current: number;
 }
 
-function ChangeCritLevel({ showModal, handleClose, current }: Props) {
+function ChangeCritLevel({
+  showModal,
+  handleClose,
+  handleSubmit,
+  current,
+}: Props) {
   const [newCritical, setNewCritical] = useState("");
-  function handleSubmit() {
-    // POST newCritical
-  }
   return (
     <>
       <Modal show={showModal} onHide={handleClose}>
@@ -19,7 +22,7 @@ function ChangeCritLevel({ showModal, handleClose, current }: Props) {
           Trenutna kritična razina: {current}%
         </Modal.Header>
         <Modal.Body>
-          <Form onSubmit={handleSubmit}>
+          <Form>
             <Form.Group className="mb-3" controlId="new-critical">
               <Form.Label>Unesite željenu kritičnu razinu:</Form.Label>
               <Form.Control
@@ -28,7 +31,7 @@ function ChangeCritLevel({ showModal, handleClose, current }: Props) {
                 onChange={(e) => setNewCritical(e.target.value)}
               />
             </Form.Group>
-            <Button variant="primary" type="submit">
+            <Button variant="primary" onClick={handleSubmit}>
               OK
             </Button>
           </Form>

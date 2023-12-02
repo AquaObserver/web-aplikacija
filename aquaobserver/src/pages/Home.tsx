@@ -16,30 +16,47 @@ function Home() {
     navigate("/history");
   };
 
-  const handleCritical = () => {
+  const handleShowCritical = () => {
     setShowModal((prev) => !prev);
   };
 
+  const handleNewCritical = () => {};
+
   return (
     <>
-      <header className="text-center app-title">AquaObserver</header>
+      <nav className="navbar navbar-dark bg-dark app-title">
+        <div className="container-fluid">
+          <a className="navbar-brand">
+            <img
+              src="/logo.png"
+              alt=""
+              height="24"
+              className="d-inline-block align-text-top"
+            />
+            AquaObserver
+          </a>
+        </div>
+      </nav>
       <div className="center">
         <Bucket
           currentLevel={currentLevel}
           criticalLevel={criticalLevel}
         ></Bucket>
       </div>
-      <div className="card">{currentAmount} ml</div>
-      <div className="card">{date.toLocaleDateString()}</div>
-      <div className="btn btn-primary m-3" onClick={handleClickHistory}>
-        Povijest Mjerenja
-      </div>
-      <div className="btn btn-success m-3" onClick={handleCritical}>
-        Promijeni kritičnu razinu
+      <div className="card-body text-center">{currentAmount} ml</div>
+      <div className="card-body text-center">{date.toLocaleDateString()}</div>
+      <div className="center">
+        <div className="btn btn-primary m-3" onClick={handleClickHistory}>
+          Povijest Mjerenja
+        </div>
+        <div className="btn btn-success m-3" onClick={handleShowCritical}>
+          Promijeni kritičnu razinu
+        </div>
       </div>
       <ChangeCritLevel
         showModal={showModal}
-        handleClose={handleCritical}
+        handleClose={handleShowCritical}
+        handleSubmit={handleNewCritical}
         current={criticalLevel}
       />
     </>
