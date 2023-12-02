@@ -20,8 +20,8 @@ function ChangeCritLevel({ showModal, handleClose, current }: Props) {
         </Modal.Header>
         <Modal.Body>
           <Form onSubmit={handleSubmit}>
-            <Form.Group className="mb-3" controlId="pin">
-              <Form.Label>PIN:</Form.Label>
+            <Form.Group className="mb-3" controlId="new-critical">
+              <Form.Label>Unesite željenu kritičnu razinu:</Form.Label>
               <Form.Control
                 type="text"
                 value={newCritical}

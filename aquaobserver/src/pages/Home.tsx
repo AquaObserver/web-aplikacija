@@ -1,12 +1,16 @@
 import { useState } from "react";
-import bucket from "../assets/bucket.png";
 
 import { useNavigate } from "react-router-dom";
 import ChangeCritLevel from "../components/ChangeCritLevel";
+import Bucket from "../components/Bucket";
 
 function Home() {
   const [showModal, setShowModal] = useState(false);
   const [criticalLevel, setCriticalLevel] = useState(20);
+  const [date, setDate] = useState(new Date());
+  const [currentLevel, setCurrentLevel] = useState(75);
+  const [currentAmount, setCurrentAmount] = useState(500);
+
   const navigate = useNavigate();
   const handleClickHistory = () => {
     navigate("/history");
@@ -18,34 +22,26 @@ function Home() {
 
   return (
     <>
-      <div className="h1 ">AquaObserver</div>
-      <div className="container">
-        <div className="row">
-          <div className="col-8">
-            <div className="row">
-              <img src={bucket} alt="" className="col-6" />
-              <div className="col-6 ">
-                <div className="card">Datum</div>
-                <div className="card">Postotak</div>
-                <div className="card">Količina</div>
-              </div>
-            </div>
-          </div>
-          <div className="col">
-            <div className="btn btn-primary my-3" onClick={handleClickHistory}>
-              Povijest Mjerenja
-            </div>
-            <div className="btn btn-success" onClick={handleCritical}>
-              Promijeni kritičnu razinu
-            </div>
-          </div>
-        </div>
-        <ChangeCritLevel
-          showModal={showModal}
-          handleClose={handleCritical}
-          current={criticalLevel}
-        />
+      <header className="text-center app-title">AquaObserver</header>
+      <div className="center">
+        <Bucket
+          currentLevel={currentLevel}
+          criticalLevel={criticalLevel}
+        ></Bucket>
       </div>
+      <div className="card">{currentAmount} ml</div>
+      <div className="card">{date.toLocaleDateString()}</div>
+      <div className="btn btn-primary m-3" onClick={handleClickHistory}>
+        Povijest Mjerenja
+      </div>
+      <div className="btn btn-success m-3" onClick={handleCritical}>
+        Promijeni kritičnu razinu
+      </div>
+      <ChangeCritLevel
+        showModal={showModal}
+        handleClose={handleCritical}
+        current={criticalLevel}
+      />
     </>
   );
 }
