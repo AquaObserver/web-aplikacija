@@ -4,7 +4,7 @@ import { Button, Modal, Form } from "react-bootstrap";
 interface Props {
   showModal: boolean;
   handleClose: () => void;
-  handleSubmit: () => void;
+  handleSubmit: (arg: number) => void;
   current: number;
 }
 
@@ -15,6 +15,15 @@ function ChangeCritLevel({
   current,
 }: Props) {
   const [newCritical, setNewCritical] = useState("");
+
+  const handleButtonClick = () => {
+    const newCriticalNumber = Number(newCritical);
+    if (!isNaN(newCriticalNumber)) {
+      handleSubmit(newCriticalNumber);
+    }
+    handleClose();
+  };
+
   return (
     <>
       <Modal show={showModal} onHide={handleClose}>
@@ -31,7 +40,7 @@ function ChangeCritLevel({
                 onChange={(e) => setNewCritical(e.target.value)}
               />
             </Form.Group>
-            <Button variant="primary" onClick={handleSubmit}>
+            <Button variant="primary" onClick={handleButtonClick}>
               OK
             </Button>
           </Form>

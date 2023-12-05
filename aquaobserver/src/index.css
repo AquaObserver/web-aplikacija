@@ -2,9 +2,22 @@
   box-sizing: border-box;
 }
 
+html, body {
+  height: 100%;
+}
+
+#root {
+  height: 100%;
+  background-color: aliceblue;
+}
+
 .center {
   display: flex;
   justify-content: center;
+}
+
+.true-center {
+  height: 100%;
 }
 
 .app-title {
@@ -13,8 +26,8 @@
 
 .bucket {
   color: #7C93C3;
-  width: 8rem;
-  height: 10rem;
+  width: 12rem;
+  height: 16rem;
   display: flex;
   justify-content: center;
   align-items: center;

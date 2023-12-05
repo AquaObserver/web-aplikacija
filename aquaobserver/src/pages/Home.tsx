@@ -11,54 +11,33 @@ function Home() {
   const [currentLevel, setCurrentLevel] = useState(75);
   const [currentAmount, setCurrentAmount] = useState(500);
 
-  const navigate = useNavigate();
-  const handleClickHistory = () => {
-    navigate("/history");
-  };
-
   const handleShowCritical = () => {
     setShowModal((prev) => !prev);
   };
 
-  const handleNewCritical = () => {};
-
   return (
     <>
-      <nav className="navbar navbar-dark bg-dark app-title">
-        <div className="container-fluid">
-          <a className="navbar-brand">
-            <img
-              src="/logo.png"
-              alt=""
-              height="24"
-              className="d-inline-block align-text-top"
-            />
-            AquaObserver
-          </a>
+      <div className="true-center">
+        <div className="center">
+          <Bucket
+            currentLevel={currentLevel}
+            criticalLevel={criticalLevel}
+          ></Bucket>
         </div>
-      </nav>
-      <div className="center">
-        <Bucket
-          currentLevel={currentLevel}
-          criticalLevel={criticalLevel}
-        ></Bucket>
+        <div className="card-body text-center">{currentAmount} ml</div>
+        <div className="card-body text-center">{date.toLocaleDateString()}</div>
+        <div className="center">
+          <div className="btn btn-success m-3" onClick={handleShowCritical}>
+            Promijeni kritičnu razinu
+          </div>
+        </div>
+        <ChangeCritLevel
+          showModal={showModal}
+          handleClose={handleShowCritical}
+          handleSubmit={setCriticalLevel}
+          current={criticalLevel}
+        />
       </div>
-      <div className="card-body text-center">{currentAmount} ml</div>
-      <div className="card-body text-center">{date.toLocaleDateString()}</div>
-      <div className="center">
-        <div className="btn btn-primary m-3" onClick={handleClickHistory}>
-          Povijest Mjerenja
-        </div>
-        <div className="btn btn-success m-3" onClick={handleShowCritical}>
-          Promijeni kritičnu razinu
-        </div>
-      </div>
-      <ChangeCritLevel
-        showModal={showModal}
-        handleClose={handleShowCritical}
-        handleSubmit={handleNewCritical}
-        current={criticalLevel}
-      />
     </>
   );
 }
