@@ -6,10 +6,19 @@ import Bucket from "../components/Bucket";
 
 function Home() {
   const [showModal, setShowModal] = useState(false);
-  const [criticalLevel, setCriticalLevel] = useState(20);
   const [date, setDate] = useState(new Date());
-  const [currentLevel, setCurrentLevel] = useState(75);
+  const [totalAmount, setTotalAmount] = useState(1000);
   const [currentAmount, setCurrentAmount] = useState(500);
+  const [currentLevel, setCurrentLevel] = useState(
+    (currentAmount / totalAmount) * 100
+  );
+  const [criticalLevel, setCriticalLevel] = useState(
+    localStorage.getItem("critical") ?? "20"
+  );
+
+  Notification.requestPermission().then((permission) =>
+    console.log(permission)
+  );
 
   const handleShowCritical = () => {
     setShowModal((prev) => !prev);
@@ -21,7 +30,7 @@ function Home() {
         <div className="center">
           <Bucket
             currentLevel={currentLevel}
-            criticalLevel={criticalLevel}
+            criticalLevel={Number(criticalLevel)}
           ></Bucket>
         </div>
         <div className="card-body text-center">{currentAmount} ml</div>
@@ -34,8 +43,7 @@ function Home() {
         <ChangeCritLevel
           showModal={showModal}
           handleClose={handleShowCritical}
-          handleSubmit={setCriticalLevel}
-          current={criticalLevel}
+          current={Number(criticalLevel)}
         />
       </div>
     </>

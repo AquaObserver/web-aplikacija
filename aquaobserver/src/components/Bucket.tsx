@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 interface Props {
   currentLevel: number;
@@ -11,6 +11,7 @@ function Bucket({ currentLevel, criticalLevel }: Props) {
   let bucketWaterStyle = {
     background: `linear-gradient(to top, lightblue ${currentLevel}%, rgba(0,0,0,0) ${currentLevel}%)`,
   };
+
   return (
     <>
       <div className={bucketClass} style={bucketWaterStyle}>
