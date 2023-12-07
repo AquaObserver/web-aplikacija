@@ -2,11 +2,11 @@ import React, { useEffect } from "react";
 
 interface Props {
   currentLevel: number;
-  criticalLevel: number;
+  threshold: number;
 }
 
-function Bucket({ currentLevel, criticalLevel }: Props) {
-  let isCritical = currentLevel < criticalLevel;
+function Bucket({ currentLevel, threshold }: Props) {
+  let isCritical = currentLevel < threshold;
   let bucketClass = isCritical ? "bucket bucket-warning" : "bucket";
   let bucketWaterStyle = {
     background: `linear-gradient(to top, lightblue ${currentLevel}%, rgba(0,0,0,0) ${currentLevel}%)`,

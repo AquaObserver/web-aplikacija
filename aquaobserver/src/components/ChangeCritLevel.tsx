@@ -3,18 +3,24 @@ import { Button, Modal, Form } from "react-bootstrap";
 
 interface Props {
   showModal: boolean;
+  changeThreshold: any;
   handleClose: () => void;
   current: number;
 }
 
-function ChangeCritLevel({ showModal, handleClose, current }: Props) {
+function ChangeCritLevel({
+  showModal,
+  changeThreshold,
+  handleClose,
+  current,
+}: Props) {
   const [newCritical, setNewCritical] = useState("");
 
-  const handleButtonClick = () => {
+  const handleSubmit = () => {
     console.log("Submit");
-    const newCriticalNumber = Number(newCritical);
-    if (!isNaN(newCriticalNumber)) {
-      localStorage.setItem("critical", newCritical);
+    const newThreshold = Number(newCritical);
+    if (!isNaN(newThreshold)) {
+      changeThreshold(newThreshold);
     }
     handleClose();
   };
@@ -28,8 +34,7 @@ function ChangeCritLevel({ showModal, handleClose, current }: Props) {
         <Modal.Body>
           <Form
             onSubmit={(e) => {
-              e.preventDefault();
-              handleButtonClick();
+              handleSubmit();
             }}
           >
             <Form.Group className="mb-3" controlId="new-critical">
