@@ -1,60 +1,75 @@
 // MyComponent.js
-import React from 'react';
-import './history-page.css';
-import homeIcon from '../assets/home-icon-html-14.jpg';
-import diagramIcon from '../assets/diagram.png';
-import leftArrow from '../assets/left-arrow.png';
-import rightArrow from '../assets/right-arrow.png';
+import React, { useState } from 'react';
+import './History.css';
+import DaysChart from "../components/DaysChart";
+import ChosenDatePage from './ChosenDatePage';
+import UserData from '../Data.json';
+
 
 export default function History() {
+  const defaultUserData = {
+    labels: UserData.byDate.map((data) => data.date),
+    datasets: [{
+      label: "RazinaVode",
+      data: UserData.byDate.map((data) => data.level),
+    }]
+  };
 
-    const handleLeftButtonClick = () => {
-        // Define the action for the left button click
-        console.log('Left button clicked!');
-        // Add your logic here
-    };
+  const [userData, setUserData] = useState(defaultUserData);
+  const [startDate, setStartDate] = useState('2023-12-02');
+  const [endDate, setEndDate] = useState('2023-12-05');
 
-    const handleRightButtonClick = () => {
-        // Define the action for the right button click
-        console.log('Right button clicked!');
-        // Add your logic here
-    };
+  const filterData = () => {
+    const filteredData = UserData.byDate.filter((data) => {
+        const dataDateObject = new Date(data.date);
+        console.log(dataDateObject)
+        return dataDateObject >= new Date(startDate) && dataDateObject <= new Date(endDate);
+    });
 
-    return (
-        <div >
-            <div className='history-container'>
-                <div></div>
-                <div>
-                    <h1 className='povijest'>Povijest mjerenja</h1>
-                    <h1 className='datum'>1.10.2023.-7.10.2023.</h1>
-                </div>
-                <img src={homeIcon} alt="home" />
-            </div>
-            <div className='diagram'>
-                <img src={diagramIcon} alt="home" />
-            </div>
-            <div className='bottom'>
-                <div className='left'>
-                    <img
-                        src={leftArrow}
-                        alt="left"
-                        className='leftButton'
-                        onClick={handleLeftButtonClick}
-                    />
-                </div>
-                <div className='minMax'>
-                    <h2>Max razina</h2>
-                    <h2>Min razina</h2>
-                </div>
-                <div className='right'>
-                    <img
-                        src={rightArrow}
-                        alt="right"
-                        className='rightButton'
-                        onClick={handleRightButtonClick}
-                    />
-                </div>
-            </div>
-        </div>
-    );
+    console.log(filteredData.map((data) => data.date))
+    console.log(new Date(startDate))
+    console.log(new Date(endDate))
+
+    setUserData({
+      labels: filteredData.map((data) => data.date),
+      datasets: [{
+        label: "RazinaVode",
+        data: filteredData.map((data) => data.level),
+      }]
+    });
+  };
+
+  const resetData = () => {
+    setUserData(defaultUserData);
+    setStartDate("2023-12-02");
+    setEndDate("2023-12-05");
+  };
+
+  return (
+    <div>
+      <div className='diagram'>
+        <DaysChart chartData={userData}/>
+      </div>
+      <div className='filters'>
+      Start: <input
+        id="start"
+        type="date"
+        min="2023-12-01"
+        max="2023-12-03"
+        value={startDate}
+        onChange={(e) => setStartDate(e.target.value)}
+      />
+      End: <input
+        id="end"
+        type="date"
+        min="2023-12-04"
+        max="2023-12-07"
+        value={endDate}
+        onChange={(e) => setEndDate(e.target.value)}
+      />
+      <button onClick={filterData}>Filter</button>
+      <button onClick={resetData}>Reset</button>
+      </div>
+    </div>
+  );
 }

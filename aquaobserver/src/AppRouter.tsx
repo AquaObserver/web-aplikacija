@@ -2,6 +2,8 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
 import Home from "./pages/Home";
 import History from "./pages/History";
+import ChangeDatePage from "./pages/ChosenDatePage";
+import ChosenDatePage from "./pages/ChosenDatePage";
 
 interface Props {
   children: React.ReactNode;
@@ -15,6 +17,7 @@ const AppRouter = (props: Props) => {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/history" element={<History />} />
+          <Route path="/chosen-date/:date" element={<ChosenDatePage />} />
         </Routes>
       </Router>
     </>

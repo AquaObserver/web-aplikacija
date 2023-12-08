@@ -1,0 +1,12 @@
+.diagram {
+  width: 70%;
+  margin-left: 15%;
+  position: "relative";
+  margin: "auto";
+}
+
+.filters {
+  display: flex;
+  justify-content: center;
+}
+
