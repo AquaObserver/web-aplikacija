@@ -17,7 +17,6 @@ function ChangeCritLevel({
   const [newCritical, setNewCritical] = useState("");
 
   const handleSubmit = () => {
-    console.log("Submit");
     const newThreshold = Number(newCritical);
     if (!isNaN(newThreshold)) {
       changeThreshold(newThreshold);

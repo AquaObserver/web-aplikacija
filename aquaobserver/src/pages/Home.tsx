@@ -18,16 +18,30 @@ function getCurrentDate() {
 async function getLatestReading() {
   const response = await fetch("/api/getLatest/");
   const data = await response.json();
-  console.log(data);
   return data;
 }
 
 async function getThreshold() {
-  let userId = 0; // hardcoded for now, will change
-
   const response = await fetch(`/api/userThreshold/`);
   const data = await response.json();
   return Number(data.threshold);
+}
+
+async function postThreshold(data: any) {
+  try {
+    const response = await fetch("/api/userThreshold/", {
+      method: "POST",
+      mode: "no-cors",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+    const result = await response.json();
+    console.log("Success: ", result);
+  } catch (error) {
+    console.error("Error: ", error);
+  }
 }
 
 function Home() {
@@ -43,7 +57,6 @@ function Home() {
     getLatestReading().then((data) => {
       let level = data.waterLevel;
       setDate(data.tstz);
-      console.log("Current level", level);
       setCurrentLevel(level);
       setCurrentLevelPercent((level / totalAmount) * 100);
     });
@@ -57,40 +70,12 @@ function Home() {
 
   async function updateThreshold(thresh: Number) {
     setLoading(true);
-
-    let requestData = {
+    let data = {
       thresholdLevel: thresh,
     };
-
-    const requestOptions = {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(requestData),
-    };
-
-    let apiUrl = `/api/userThreshold/`;
-
-    fetch(apiUrl, requestOptions)
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-        return response.json();
-      })
-      .then((data) => {
-        console.log("Data received:", data);
-      })
-      .catch((error) => {
-        console.error("Fetch error:", error);
-      });
+    postThreshold(data);
     setLoading(false);
   }
-
-  Notification.requestPermission().then((permission) =>
-    console.log(permission)
-  );
 
   const handleShowCritical = () => {
     setShowModal((prev) => !prev);
