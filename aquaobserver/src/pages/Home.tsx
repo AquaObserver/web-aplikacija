@@ -15,27 +15,17 @@ function getCurrentDate() {
   return formattedDate;
 }
 
-async function getCurrentAmount() {
-  let requestDate = { date: "2023-12-06" }; //getCurrentDate() ali
-
-  // Request options
-  const requestOptions = {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(requestDate),
-  };
-
-  const response = await fetch("/api/dailyLatest/", requestOptions);
+async function getLatestReading() {
+  const response = await fetch("/api/getLatest/");
   const data = await response.json();
-  return Number(data.waterLevel);
+  console.log(data);
+  return data;
 }
 
 async function getThreshold() {
   let userId = 0; // hardcoded for now, will change
 
-  const response = await fetch(`/api/userThreshold/${userId}`);
+  const response = await fetch(`/api/userThreshold/`);
   const data = await response.json();
   return Number(data.threshold);
 }
@@ -43,16 +33,19 @@ async function getThreshold() {
 function Home() {
   const [showModal, setShowModal] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [date, setDate] = useState(new Date());
-  const [totalAmount, setTotalAmount] = useState(1000);
-  const [currentAmount, setCurrentAmount] = useState(0);
+  const [date, setDate] = useState("");
+  const [totalAmount, setTotalAmount] = useState(100);
   const [currentLevel, setCurrentLevel] = useState(0);
+  const [currentLevelPercent, setCurrentLevelPercent] = useState(0);
   const [threshold, setThreshold] = useState(0);
 
   useEffect(() => {
-    getCurrentAmount().then((amount) => {
-      setCurrentAmount(amount);
-      setCurrentLevel((amount / totalAmount) * 100);
+    getLatestReading().then((data) => {
+      let level = data.waterLevel;
+      setDate(data.tstz);
+      console.log("Current level", level);
+      setCurrentLevel(level);
+      setCurrentLevelPercent((level / totalAmount) * 100);
     });
     getThreshold().then((threshold) => {
       setThreshold(threshold);
@@ -62,24 +55,22 @@ function Home() {
     }, 1000);
   }, [threshold]);
 
-  async function putThreshold(thresh: Number) {
+  async function updateThreshold(thresh: Number) {
     setLoading(true);
-    let userId = 0;
 
     let requestData = {
-      userId: userId,
       thresholdLevel: thresh,
     };
 
     const requestOptions = {
-      method: "PUT",
+      method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(requestData),
     };
 
-    let apiUrl = `/api/userThreshold/${userId}`;
+    let apiUrl = `/api/userThreshold/`;
 
     fetch(apiUrl, requestOptions)
       .then((response) => {
@@ -90,7 +81,6 @@ function Home() {
       })
       .then((data) => {
         console.log("Data received:", data);
-        // Handle the response data as needed
       })
       .catch((error) => {
         console.error("Fetch error:", error);
@@ -117,14 +107,12 @@ function Home() {
           <>
             <div className="center">
               <Bucket
-                currentLevel={currentLevel}
+                currentLevel={currentLevelPercent}
                 threshold={Number(threshold)}
               ></Bucket>
             </div>
-            <div className="card-body text-center">{currentAmount} ml</div>
-            <div className="card-body text-center">
-              {date.toLocaleDateString()}
-            </div>
+            <div className="card-body text-center">{currentLevel} ml</div>
+            <div className="card-body text-center">{date}</div>
             <div className="card-body text-center">
               Kritična razina: {threshold} %
             </div>
@@ -136,7 +124,7 @@ function Home() {
             <ChangeCritLevel
               showModal={showModal}
               handleClose={handleShowCritical}
-              changeThreshold={putThreshold}
+              changeThreshold={updateThreshold}
               current={Number(threshold)}
             />
           </>
