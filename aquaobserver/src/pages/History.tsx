@@ -64,8 +64,9 @@ export default function History() {
   const [endDate, setEndDate] = useState<string>(currentDate);
 
   useEffect(() => {
+    console.log("Defoltni")
     fetchDefaultData();
-  }, [startDate, endDate]);
+  }, []);
 
   const fetchDefaultData = async () => {
     const defaultData = await createDefaultUserData(maxStartDate, currentDate);
@@ -105,9 +106,9 @@ export default function History() {
   };
 
   const resetData = () => {
-    fetchDefaultData();
     setStartDate(maxStartDate);
     setEndDate(currentDate);
+    fetchDefaultData();
     console.log(maxStartDate)
     console.log(currentDate)
   };
