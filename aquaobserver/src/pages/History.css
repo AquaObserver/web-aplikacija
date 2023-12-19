@@ -1,12 +1,17 @@
 .diagram {
   width: 70%;
+  height: 750px;
   margin-left: 15%;
   position: "relative";
   margin: "auto";
+  padding-top: 2%;
 }
 
 .filters {
   display: flex;
   justify-content: center;
+  align-items: center;
+  gap: 10px;
+  padding-top: 1%;
 }
 

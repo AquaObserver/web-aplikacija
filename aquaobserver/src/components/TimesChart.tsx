@@ -1,6 +1,9 @@
 import React from 'react';
 import { Line } from 'react-chartjs-2';
-import 'chartjs-plugin-zoom';
+import  zoomPlugin from 'chartjs-plugin-zoom';
+import { Chart } from 'chart.js';
+
+Chart.register(zoomPlugin);
 
 function TimesChart({ chartData }: any) {
   return (
@@ -10,10 +13,12 @@ function TimesChart({ chartData }: any) {
       options={{
         scales: {
           x: {
-            
+            min: 0,
+        max: 100,
           },
           y: {
             beginAtZero: true,
+            min:0,
           },
         },
         plugins: {
@@ -24,11 +29,22 @@ function TimesChart({ chartData }: any) {
           zoom: {
             pan: {
               enabled: true,
-              mode: 'x',
+              mode: 'xy',
             },
             zoom: {
+              wheel: {
+                enabled: true,
+              },
+              pinch: {
+                enabled: true,
+              },
               mode: 'x',
             },
+            limits: {
+              y: {
+                min: 0,
+              },
+            }
           },
         },
         responsive: true,
