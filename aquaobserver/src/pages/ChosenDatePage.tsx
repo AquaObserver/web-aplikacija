@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import TimesChart from '../components/TimesChart';
+import './ChoseDatePage.css';
 
 export default function ChosenDatePage() {
   const params = useParams();
@@ -12,8 +13,10 @@ export default function ChosenDatePage() {
       {
         label: 'Water Level',
         data: [],
-        fill: false,
-        borderColor: 'rgba(75,192,192,1)',
+        fill: true,
+        borderColor: 'rgb(53, 162, 235)',
+        backgroundColor: 'rgba(53, 162, 235, 0.5)',
+        tension: 0.5,
       },
     ],
   });
@@ -33,10 +36,12 @@ export default function ChosenDatePage() {
           labels: data.map((entry: { time: any; }) => entry.time),
           datasets: [
             {
-              label: 'Water Level',
+              label: 'Razina vode',
               data: data.map((entry: { waterLevel: any; }) => entry.waterLevel),
-              fill: false,
-              borderColor: 'rgba(75,192,192,1)',
+              fill: true,
+              borderColor: 'rgb(53, 162, 235)',
+              backgroundColor: 'rgba(53, 162, 235, 0.5)',
+              tension: 0.5,
             },
           ],
         });
@@ -50,7 +55,7 @@ export default function ChosenDatePage() {
 
   return (
     <div>
-      <h2>Measures for {date}</h2>
+      <h2>Mjerenja za {date}</h2>
       <TimesChart chartData={chartData} />
     </div>
   );

@@ -12,6 +12,9 @@ interface UserData {
   datasets: {
     label: string;
     data: number[];
+    borderColor: 'rgb(53, 162, 235)';
+    backgroundColor: 'rgba(53, 162, 235, 0.5)';
+    borderWidth: 3;
   }[];
 }
 
@@ -19,7 +22,7 @@ export default function History() {
   const currentDate = new Date().toISOString().split('T')[0];
 
   const threeDaysAgo = new Date();
-  threeDaysAgo.setDate(threeDaysAgo.getDate() - 3);
+  threeDaysAgo.setDate(threeDaysAgo.getDate() - 6);
   const maxStartDate = threeDaysAgo.toISOString().split('T')[0];
 
   const createDefaultUserData = async (startDate: string, endDate: string): Promise<UserData> => {
@@ -36,8 +39,11 @@ export default function History() {
       return {
         labels,
         datasets: [{
-          label: "RazinaVode",
+          label: "Razina vode",
           data: levels,
+          borderColor: 'rgb(53, 162, 235)',
+          backgroundColor: 'rgba(53, 162, 235, 0.5)',
+          borderWidth: 3,
         }]
       };
     } catch (error) {
@@ -45,8 +51,11 @@ export default function History() {
       return {
         labels: [],
         datasets: [{
-          label: "RazinaVode",
+          label: "Razina vode",
           data: [],
+          borderColor: 'rgb(53, 162, 235)',
+          backgroundColor: 'rgba(53, 162, 235, 0.5)',
+          borderWidth: 3,
         }]
       };
     }
@@ -55,8 +64,11 @@ export default function History() {
   const [userData, setUserData] = useState<UserData>({
     labels: [],
     datasets: [{
-      label: "RazinaVode",
+      label: "Razina vode",
       data: [],
+      borderColor: 'rgb(53, 162, 235)',
+      backgroundColor: 'rgba(53, 162, 235, 0.5)',
+      borderWidth: 3,
     }]
   });
 
@@ -96,8 +108,11 @@ export default function History() {
       setUserData({
         labels,
         datasets: [{
-          label: "RazinaVode",
+          label: "Razina vode",
           data: levels,
+          borderColor: 'rgb(53, 162, 235)',
+          backgroundColor: 'rgba(53, 162, 235, 0.5)',
+          borderWidth: 3,
         }]
       });
     } catch (error) {
@@ -116,7 +131,7 @@ export default function History() {
   return (
     <div>
       <div className='diagram'>
-        <DaysChart chartData={userData}/>
+        <DaysChart chartData={userData} />
       </div>
       <div className='filters'>
         Start:
@@ -137,8 +152,8 @@ export default function History() {
           value={endDate}
           onChange={(e) => setEndDate(e.target.value)}
         />
-        <button onClick={fetchData}>Filter</button>
-        <button onClick={resetData}>Reset</button>
+        <button type="button" className="btn btn-dark" onClick={fetchData}>Filter</button>
+        <button type="button" className="btn btn-dark" onClick={resetData}>Reset</button>
       </div>
     </div>
   );
