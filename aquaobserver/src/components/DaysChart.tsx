@@ -26,7 +26,8 @@ function BarChart({ chartData }: any) {
             
           },
       y: {
-        beginAtZero: true
+        beginAtZero: true,
+        max: 100,
       }
     },
     responsive: true,

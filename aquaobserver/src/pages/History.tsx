@@ -21,13 +21,15 @@ interface UserData {
 export default function History() {
   const currentDate = new Date().toISOString().split('T')[0];
 
+  console.log("danasnji " + currentDate)
+
   const threeDaysAgo = new Date();
   threeDaysAgo.setDate(threeDaysAgo.getDate() - 6);
   const maxStartDate = threeDaysAgo.toISOString().split('T')[0];
 
   const createDefaultUserData = async (startDate: string, endDate: string): Promise<UserData> => {
     try {
-      const response = await fetch(`http://127.0.0.1:8000/readingsRange/${startDate}:${endDate}`);
+      const response = await fetch(`/api/readingsRange/${startDate}:${endDate}`);
       if (!response.ok) {
         throw new Error('Failed to fetch default data');
       }
@@ -87,7 +89,7 @@ export default function History() {
 
   const fetchData = async () => {
     try {
-      const response = await fetch(`http://127.0.0.1:8000/readingsRange/${startDate}:${endDate}`);
+      const response = await fetch(`/api/readingsRange/${startDate}:${endDate}`);
       if (!response.ok) {
         throw new Error('Failed to fetch data');
       }
@@ -138,7 +140,7 @@ export default function History() {
         <input
           id="start"
           type="date"
-          min="2023-12-01"
+          min="2023-11-29"
           max={maxStartDate}
           value={startDate}
           onChange={(e) => setStartDate(e.target.value)}

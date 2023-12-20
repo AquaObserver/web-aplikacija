@@ -24,7 +24,7 @@ export default function ChosenDatePage() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`http://127.0.0.1:8000/readings/${date}`);
+        const response = await fetch(`/api/readings/${date}`);
         if (!response.ok) {
           throw new Error('Failed to fetch data for the selected date');
         }

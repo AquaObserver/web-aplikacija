@@ -43,6 +43,7 @@ function TimesChart({ chartData }: any) {
             limits: {
               y: {
                 min: 0,
+                max:100,
               },
             }
           },
