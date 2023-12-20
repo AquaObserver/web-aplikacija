@@ -10,7 +10,7 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: LOCAL_API,
+        target: NGROK_API,
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ''),
       },
