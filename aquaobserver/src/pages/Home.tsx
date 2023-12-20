@@ -51,8 +51,9 @@ function Home() {
   const [date, setDate] = useState("");
   const [currentLevel, setCurrentLevel] = useState(0);
   const [threshold, setThreshold] = useState(0);
+  const WAIT_MS = 120000;
 
-  useEffect(() => {
+  function loadBucket() {
     setLoading(true);
     getLatestReading().then((data) => {
       let level = data.waterLevel;
@@ -64,7 +65,16 @@ function Home() {
     });
     setTimeout(() => {
       setLoading(false);
-    }, 1000);
+    }, 200);
+  }
+
+  useEffect(() => {
+    loadBucket();
+    const interval = setInterval(() => {
+      loadBucket();
+    }, WAIT_MS);
+
+    return () => clearInterval(interval);
   }, []);
 
   async function updateThreshold(thresh: Number) {
