@@ -1,4 +1,6 @@
 import { useState, useEffect } from "react";
+import { getNotificationToken } from "../firebase";
+import { Toast, Button } from "react-bootstrap";
 import ChangeCritLevel from "../components/ChangeCritLevel";
 import Bucket from "../components/Bucket";
 
@@ -31,7 +33,6 @@ async function postThreshold(data: any) {
   try {
     const response = await fetch("/api/userThreshold/", {
       method: "POST",
-      mode: "no-cors",
       headers: {
         "Content-Type": "application/json",
       },
@@ -45,20 +46,18 @@ async function postThreshold(data: any) {
 }
 
 function Home() {
-  const [showModal, setShowModal] = useState(false);
+  const [showChangeThreshold, setShowChangeThreshold] = useState(false);
   const [loading, setLoading] = useState(true);
   const [date, setDate] = useState("");
-  const [totalAmount, setTotalAmount] = useState(100);
   const [currentLevel, setCurrentLevel] = useState(0);
-  const [currentLevelPercent, setCurrentLevelPercent] = useState(0);
   const [threshold, setThreshold] = useState(0);
 
   useEffect(() => {
+    setLoading(true);
     getLatestReading().then((data) => {
       let level = data.waterLevel;
       setDate(data.tstz);
       setCurrentLevel(level);
-      setCurrentLevelPercent((level / totalAmount) * 100);
     });
     getThreshold().then((threshold) => {
       setThreshold(threshold);
@@ -66,7 +65,7 @@ function Home() {
     setTimeout(() => {
       setLoading(false);
     }, 1000);
-  }, [threshold]);
+  }, []);
 
   async function updateThreshold(thresh: Number) {
     setLoading(true);
@@ -78,7 +77,7 @@ function Home() {
   }
 
   const handleShowCritical = () => {
-    setShowModal((prev) => !prev);
+    setShowChangeThreshold((prev) => !prev);
   };
 
   return (
@@ -92,12 +91,13 @@ function Home() {
           <>
             <div className="center">
               <Bucket
-                currentLevel={currentLevelPercent}
+                currentLevel={currentLevel}
                 threshold={Number(threshold)}
               ></Bucket>
             </div>
-            <div className="card-body text-center">{currentLevel} ml</div>
-            <div className="card-body text-center">{date}</div>
+            <div className="card-body text-center">
+              Zadnje mjerenje: {date.split("T")[1]}
+            </div>
             <div className="card-body text-center">
               Kritična razina: {threshold} %
             </div>
@@ -107,7 +107,7 @@ function Home() {
               </div>
             </div>
             <ChangeCritLevel
-              showModal={showModal}
+              showModal={showChangeThreshold}
               handleClose={handleShowCritical}
               changeThreshold={updateThreshold}
               current={Number(threshold)}
