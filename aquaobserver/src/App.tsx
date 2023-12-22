@@ -25,19 +25,11 @@ function App() {
   // }, []);
 
   function manageNotifications() {
-    if (Notification.permission !== "granted") {
-      Notification.requestPermission().then((permission) => {
-        if (permission === "granted") {
-          getNotificationToken(setTokenFound);
-        }
-      });
-    } else {
-      setNotification({
-        title: "AquaObserver",
-        body: "Obavijesti su uključene",
-      });
-      setShowNotification(true);
-    }
+    Notification.requestPermission().then((permission) => {
+      if (permission === "granted") {
+        getNotificationToken(setTokenFound);
+      }
+    });
   }
 
   onMessageListener()
@@ -58,7 +50,10 @@ function App() {
   return (
     <>
       <AppRouter>
-        <TitleBar manageNotifications={manageNotifications}></TitleBar>
+        <TitleBar
+          manageNotifications={manageNotifications}
+          notificationPermission={Notification.permission}
+        ></TitleBar>
       </AppRouter>
 
       <div>

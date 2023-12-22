@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import TimesChart from "../components/TimesChart";
-import "./ChoseDatePage.css";
+import "../index.css";
 
 export default function ChosenDatePage() {
   const params = useParams();
@@ -59,7 +59,7 @@ export default function ChosenDatePage() {
 
   return (
     <div>
-      <h2>Mjerenja za {date}</h2>
+      <div className="header2">Mjerenja za {date}</div>
       <TimesChart chartData={chartData} />
     </div>
   );

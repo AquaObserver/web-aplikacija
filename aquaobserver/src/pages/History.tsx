@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import "./History.css";
 import DaysChart from "../components/DaysChart";
+import "../index.css";
 
 interface ReadingData {
   date: string;

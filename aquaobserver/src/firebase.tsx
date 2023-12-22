@@ -2,10 +2,11 @@ import { initializeApp } from "firebase/app";
 import { getMessaging, getToken, onMessage } from "firebase/messaging";
 
 async function registerDevice(data: any) {
-  const response = await fetch("http://127.0.0.1:8000/registerDevice/", {
+  const response = await fetch("/api/registerDevice/", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
+      "ngrok-skip-browser-warning": "any-value",
     },
     body: JSON.stringify(data),
   });

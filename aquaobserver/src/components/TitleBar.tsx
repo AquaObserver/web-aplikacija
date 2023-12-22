@@ -4,9 +4,10 @@ import { Container, Nav, Navbar, NavDropdown } from "react-bootstrap";
 
 interface Props {
   manageNotifications: any;
+  notificationPermission: string;
 }
 
-function TitleBar({ manageNotifications }: Props) {
+function TitleBar({ manageNotifications, notificationPermission }: Props) {
   return (
     <Navbar bg="dark" data-bs-theme="dark">
       <Container>
@@ -26,7 +27,11 @@ function TitleBar({ manageNotifications }: Props) {
         <Nav className="ms-auto">
           <Nav.Link>
             <i
-              className="fa-sharp fa-solid fa-bell"
+              className={
+                notificationPermission === "granted"
+                  ? "fa-sharp fa-solid fa-bell"
+                  : "fa-solid fa-bell-slash"
+              }
               onClick={() => manageNotifications()}
             ></i>
           </Nav.Link>
@@ -36,24 +41,6 @@ function TitleBar({ manageNotifications }: Props) {
         </Nav>
       </Container>
     </Navbar>
-    // <nav className="navbar navbar-dark bg-dark app-title">
-    //   <div className="container-fluid">
-    //     <a className="navbar-brand" href="/">
-    //       <img
-    //         src="/logo.png"
-    //         alt=""
-    //         height="24"
-    //         className="d-inline-block align-text-top"
-    //       />
-    //       AquaObserver
-    //     </a>
-    //     <div className="navbar-nav">
-    //       <a className="nav-item nav-link active" href="/history">
-    //         Povijest mjerenja
-    //       </a>
-    //     </div>
-    //   </div>
-    // </nav>
   );
 }
 

@@ -56,8 +56,9 @@ async function postThreshold(data: any) {
       },
       body: JSON.stringify(data),
     });
-    const result = await response.json();
+    const result = await response.text();
     console.log("Success: ", result);
+    return Number(result);
   } catch (error) {
     console.error("Error: ", error);
   }
@@ -68,8 +69,9 @@ function Home() {
   const [loading, setLoading] = useState(true);
   const [date, setDate] = useState("");
   const [currentLevel, setCurrentLevel] = useState(0);
-  const [threshold, setThreshold] = useState(0);
-  const WAIT_MS = 120000;
+  const [threshold, setThreshold] = useState<number | undefined>(0);
+  const WAIT_S = 120;
+  const WAIT_MS = WAIT_S * 1000;
 
   function loadBucket() {
     setLoading(true);
@@ -79,11 +81,11 @@ function Home() {
       setCurrentLevel(level);
     });
     getThreshold().then((threshold) => {
-      setThreshold(threshold ? threshold : 0);
+      setThreshold(threshold);
     });
     setTimeout(() => {
       setLoading(false);
-    }, 500);
+    }, 700);
   }
 
   useEffect(() => {
@@ -100,7 +102,8 @@ function Home() {
     let data = {
       thresholdLevel: thresh,
     };
-    postThreshold(data);
+    const newThresh = await postThreshold(data);
+    setThreshold(newThresh);
     setLoading(false);
   }
 
@@ -137,7 +140,7 @@ function Home() {
             <ChangeCritLevel
               showModal={showChangeThreshold}
               handleClose={handleShowCritical}
-              changeThreshold={updateThreshold}
+              updateThreshold={updateThreshold}
               current={Number(threshold)}
             />
           </>

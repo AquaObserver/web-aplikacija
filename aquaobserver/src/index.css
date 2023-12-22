@@ -39,3 +39,31 @@
 .bucket-text {
   font-size: 3rem;
 }
+
+/* History */
+
+.diagram {
+  width: 70%;
+  height: 750px;
+  margin-left: 15%;
+  position: "relative";
+  margin: "auto";
+  padding-top: 2%;
+}
+
+.filters {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  padding-top: 1%;
+}
+
+/* ChosenDatePage */
+
+.header2 {
+  display: flex;
+  justify-content: center;
+  padding-top: 2%;
+  padding-bottom: 2%;
+}
