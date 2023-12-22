@@ -18,15 +18,32 @@ function getCurrentDate() {
 }
 
 async function getLatestReading() {
-  const response = await fetch("/api/getLatest/");
-  const data = await response.json();
-  return data;
+  try {
+    const response = await fetch("/api/getLatest/", {
+      headers: {
+        // header koji je potrebno dodati u svaki request s ngroka, vrijednost moze biti bilo kakva
+        "ngrok-skip-browser-warning": "any-value",
+      },
+    });
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.log("ERROR: ", error);
+  }
 }
 
 async function getThreshold() {
-  const response = await fetch(`/api/userThreshold/`);
-  const data = await response.json();
-  return Number(data.threshold);
+  try {
+    const response = await fetch(`/api/userThreshold/`, {
+      headers: {
+        "ngrok-skip-browser-warning": "any-value",
+      },
+    });
+    const data = await response.json();
+    return Number(data.threshold);
+  } catch (error) {
+    console.log("ERROR: ", error);
+  }
 }
 
 async function postThreshold(data: any) {
@@ -35,6 +52,7 @@ async function postThreshold(data: any) {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        "ngrok-skip-browser-warning": "any-value",
       },
       body: JSON.stringify(data),
     });
@@ -61,11 +79,11 @@ function Home() {
       setCurrentLevel(level);
     });
     getThreshold().then((threshold) => {
-      setThreshold(threshold);
+      setThreshold(threshold ? threshold : 0);
     });
     setTimeout(() => {
       setLoading(false);
-    }, 200);
+    }, 500);
   }
 
   useEffect(() => {

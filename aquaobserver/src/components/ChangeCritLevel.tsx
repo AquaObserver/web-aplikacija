@@ -39,7 +39,7 @@ function ChangeCritLevel({
             <Form.Group className="mb-3" controlId="new-critical">
               <Form.Label>Unesite željenu kritičnu razinu:</Form.Label>
               <Form.Control
-                type="text"
+                type="number"
                 value={newCritical}
                 onChange={(e) => setNewCritical(e.target.value)}
               />

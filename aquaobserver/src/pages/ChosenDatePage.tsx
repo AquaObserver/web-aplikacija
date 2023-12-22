@@ -24,7 +24,11 @@ export default function ChosenDatePage() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`/api/readings/${date}`);
+        const response = await fetch(`/api/readings/${date}`, {
+          headers: {
+            "ngrok-skip-browser-warning": "any-value",
+          },
+        });
         if (!response.ok) {
           throw new Error("Failed to fetch data for the selected date");
         }

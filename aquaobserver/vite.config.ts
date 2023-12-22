@@ -1,5 +1,6 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
+import { readFileSync } from 'fs';
 
 const LOCAL_API = 'http://127.0.0.1:8000/'
 const NGROK_API = 'https://polliwog-enormous-walrus.ngrok-free.app/'

@@ -31,7 +31,12 @@ export default function History() {
   ): Promise<UserData> => {
     try {
       const response = await fetch(
-        `/api/readingsRange/${startDate}:${endDate}`
+        `/api/readingsRange/${startDate}:${endDate}`,
+        {
+          headers: {
+            "ngrok-skip-browser-warning": "any-value",
+          },
+        }
       );
       if (!response.ok) {
         throw new Error("Failed to fetch default data");
@@ -99,7 +104,12 @@ export default function History() {
   const fetchData = async () => {
     try {
       const response = await fetch(
-        `/api/readingsRange/${startDate}:${endDate}`
+        `/api/readingsRange/${startDate}:${endDate}`,
+        {
+          headers: {
+            "ngrok-skip-browser-warning": "any-value",
+          },
+        }
       );
       if (!response.ok) {
         throw new Error("Failed to fetch data");
