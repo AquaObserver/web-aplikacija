@@ -32,11 +32,16 @@ function TitleBar({ manageNotifications, notificationPermission }: Props) {
                   ? "fa-sharp fa-solid fa-bell"
                   : "fa-solid fa-bell-slash"
               }
+              title={
+                notificationPermission === "granted"
+                  ? "Obavijesti su uključene"
+                  : "Uključi obavijesti"
+              }
               onClick={() => manageNotifications()}
             ></i>
           </Nav.Link>
           <Nav.Link href="/calibration">
-            <i className="fa-solid fa-bucket"></i>
+            <i className="fa-solid fa-bucket" title="Kalibracija"></i>
           </Nav.Link>
         </Nav>
       </Container>
