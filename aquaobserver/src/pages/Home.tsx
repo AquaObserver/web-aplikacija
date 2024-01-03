@@ -1,4 +1,6 @@
 import { useState, useEffect } from "react";
+import { getNotificationToken } from "../firebase";
+import { Toast, Button } from "react-bootstrap";
 import ChangeCritLevel from "../components/ChangeCritLevel";
 import Bucket from "../components/Bucket";
 
@@ -16,69 +18,97 @@ function getCurrentDate() {
 }
 
 async function getLatestReading() {
-  const response = await fetch("/api/getLatest/");
-  const data = await response.json();
-  return data;
+  try {
+    const response = await fetch("/api/getLatest/", {
+      headers: {
+        // header koji je potrebno dodati u svaki request s ngroka, vrijednost moze biti bilo kakva
+        "ngrok-skip-browser-warning": "any-value",
+      },
+    });
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.log("ERROR: ", error);
+  }
 }
 
 async function getThreshold() {
-  const response = await fetch(`/api/userThreshold/`);
-  const data = await response.json();
-  return Number(data.threshold);
+  try {
+    const response = await fetch(`/api/userThreshold/`, {
+      headers: {
+        "ngrok-skip-browser-warning": "any-value",
+      },
+    });
+    const data = await response.json();
+    return Number(data.threshold);
+  } catch (error) {
+    console.log("ERROR: ", error);
+  }
 }
 
 async function postThreshold(data: any) {
   try {
     const response = await fetch("/api/userThreshold/", {
       method: "POST",
-      mode: "no-cors",
       headers: {
         "Content-Type": "application/json",
+        "ngrok-skip-browser-warning": "any-value",
       },
       body: JSON.stringify(data),
     });
-    const result = await response.json();
+    const result = await response.text();
     console.log("Success: ", result);
+    return Number(result);
   } catch (error) {
     console.error("Error: ", error);
   }
 }
 
 function Home() {
-  const [showModal, setShowModal] = useState(false);
+  const [showChangeThreshold, setShowChangeThreshold] = useState(false);
   const [loading, setLoading] = useState(true);
   const [date, setDate] = useState("");
-  const [totalAmount, setTotalAmount] = useState(100);
   const [currentLevel, setCurrentLevel] = useState(0);
-  const [currentLevelPercent, setCurrentLevelPercent] = useState(0);
-  const [threshold, setThreshold] = useState(0);
+  const [threshold, setThreshold] = useState<number | undefined>(0);
+  const WAIT_S = 120;
+  const WAIT_MS = WAIT_S * 1000;
 
-  useEffect(() => {
+  function loadBucket() {
+    setLoading(true);
     getLatestReading().then((data) => {
       let level = data.waterLevel;
       setDate(data.tstz);
       setCurrentLevel(level);
-      setCurrentLevelPercent((level / totalAmount) * 100);
     });
     getThreshold().then((threshold) => {
       setThreshold(threshold);
     });
     setTimeout(() => {
       setLoading(false);
-    }, 1000);
-  }, [threshold]);
+    }, 700);
+  }
+
+  useEffect(() => {
+    loadBucket();
+    const interval = setInterval(() => {
+      loadBucket();
+    }, WAIT_MS);
+
+    return () => clearInterval(interval);
+  }, []);
 
   async function updateThreshold(thresh: Number) {
     setLoading(true);
     let data = {
       thresholdLevel: thresh,
     };
-    postThreshold(data);
+    const newThresh = await postThreshold(data);
+    setThreshold(newThresh);
     setLoading(false);
   }
 
   const handleShowCritical = () => {
-    setShowModal((prev) => !prev);
+    setShowChangeThreshold((prev) => !prev);
   };
 
   return (
@@ -92,12 +122,13 @@ function Home() {
           <>
             <div className="center">
               <Bucket
-                currentLevel={currentLevelPercent}
+                currentLevel={currentLevel}
                 threshold={Number(threshold)}
               ></Bucket>
             </div>
-            <div className="card-body text-center">{currentLevel} ml</div>
-            <div className="card-body text-center">{date}</div>
+            <div className="card-body text-center">
+              Zadnje mjerenje: {date.split("T")[1]}
+            </div>
             <div className="card-body text-center">
               Kritična razina: {threshold} %
             </div>
@@ -107,9 +138,9 @@ function Home() {
               </div>
             </div>
             <ChangeCritLevel
-              showModal={showModal}
+              showModal={showChangeThreshold}
               handleClose={handleShowCritical}
-              changeThreshold={updateThreshold}
+              updateThreshold={updateThreshold}
               current={Number(threshold)}
             />
           </>

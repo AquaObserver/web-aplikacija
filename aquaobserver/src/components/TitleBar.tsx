@@ -1,26 +1,51 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { Container, Nav, Navbar, NavDropdown } from "react-bootstrap";
 
-function TitleBar() {
+interface Props {
+  manageNotifications: any;
+  notificationPermission: string;
+}
+
+function TitleBar({ manageNotifications, notificationPermission }: Props) {
   return (
-    <nav className="navbar navbar-dark bg-dark app-title">
-      <div className="container-fluid">
-        <a className="navbar-brand" href="/">
+    <Navbar bg="dark" data-bs-theme="dark">
+      <Container>
+        <Navbar.Brand href="/">
           <img
-            src="/logo.png"
             alt=""
-            height="24"
-            className="d-inline-block align-text-top"
+            src="../../public/logo.png"
+            width="30"
+            height="30"
+            className="d-inline-block align-top"
           />
           AquaObserver
-        </a>
-        <div className="navbar-nav">
-          <a className="nav-item nav-link active" href="/history">
-            Povijest mjerenja
-          </a>
-        </div>
-      </div>
-    </nav>
+        </Navbar.Brand>
+        <Nav className="me-auto">
+          <Nav.Link href="/history">Povijest mjerenja</Nav.Link>
+        </Nav>
+        <Nav className="ms-auto">
+          <Nav.Link>
+            <i
+              className={
+                notificationPermission === "granted"
+                  ? "fa-sharp fa-solid fa-bell"
+                  : "fa-solid fa-bell-slash"
+              }
+              title={
+                notificationPermission === "granted"
+                  ? "Obavijesti su uključene"
+                  : "Uključi obavijesti"
+              }
+              onClick={() => manageNotifications()}
+            ></i>
+          </Nav.Link>
+          <Nav.Link href="/calibration">
+            <i className="fa-solid fa-bucket" title="Kalibracija"></i>
+          </Nav.Link>
+        </Nav>
+      </Container>
+    </Navbar>
   );
 }
 

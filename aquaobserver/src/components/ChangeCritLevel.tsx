@@ -1,47 +1,58 @@
-import { useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { Button, Modal, Form } from "react-bootstrap";
 
 interface Props {
   showModal: boolean;
-  changeThreshold: any;
+  updateThreshold: any;
   handleClose: () => void;
   current: number;
 }
 
 function ChangeCritLevel({
   showModal,
-  changeThreshold,
+  updateThreshold,
   handleClose,
   current,
 }: Props) {
-  const [newCritical, setNewCritical] = useState("");
+  const [newThreshold, setNewThreshold] = useState(current);
 
-  const handleSubmit = () => {
-    const newThreshold = Number(newCritical);
-    if (!isNaN(newThreshold)) {
-      changeThreshold(newThreshold);
-    }
+  useEffect(() => {
+    setNewThreshold(current);
+  }, [current]);
+
+  const handleSubmit = (e: FormEvent) => {
+    e.preventDefault();
+    updateThreshold(newThreshold);
     handleClose();
   };
 
+  function hide() {
+    setNewThreshold(current);
+    handleClose();
+  }
+
   return (
     <>
-      <Modal show={showModal} onHide={handleClose}>
+      <Modal show={showModal} onHide={hide}>
         <Modal.Header closeButton>
           Trenutna kritična razina: {current}%
         </Modal.Header>
         <Modal.Body>
           <Form
             onSubmit={(e) => {
-              handleSubmit();
+              handleSubmit(e);
             }}
           >
             <Form.Group className="mb-3" controlId="new-critical">
               <Form.Label>Unesite željenu kritičnu razinu:</Form.Label>
               <Form.Control
-                type="text"
-                value={newCritical}
-                onChange={(e) => setNewCritical(e.target.value)}
+                type="number"
+                min="0"
+                max="100"
+                value={newThreshold.toString()}
+                onChange={(e) => {
+                  setNewThreshold(Number(e.target.value));
+                }}
               />
             </Form.Group>
             <Button variant="primary" type="submit">
