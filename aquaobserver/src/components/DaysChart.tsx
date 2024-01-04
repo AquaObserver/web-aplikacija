@@ -2,6 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { Bar } from 'react-chartjs-2';
 import 'chart.js/auto';
 import { useNavigate } from 'react-router-dom';
+import annotationPlugin from 'chartjs-plugin-annotation';
+import { Chart } from 'chart.js';
+
+Chart.register(annotationPlugin);
 
 
 function BarChart({ chartData }: any) {
@@ -34,52 +38,42 @@ function BarChart({ chartData }: any) {
     fetchThreshold();
   }, []);
 
-  
+
 
   console.log("Threshold: " + threshold);
 
-  const arbitraryLines = {
-    id: 'arbitraryLines',
-    beforeDatasetsDraw(chart: any, args: any, plugins: any) {
-      const {ctx, scales: {x, y}, chartArea: {left, right}} = chart;
-
-      ctx.save();
-
-      function drawLine(lineThickness: any, lineColor: any, yCoor: any) {
-        ctx.beginPath();
-        ctx.strokeStyle = lineColor;
-        ctx.lineWidth = lineThickness;
-        ctx.moveTo(left, y.getPixelForValue(yCoor));
-        ctx.lineTo(right, y.getPixelForValue(yCoor));
-        ctx.stroke();
-      }
-
-      if (threshold !== null) {
-        drawLine(5, 'red', threshold);
-      }  
-    }
-  }
-
-  return <Bar  
-  data={chartData}
-  width={10}
-  height={800}
-  options={{ 
-    scales: {
+  return <Bar
+    data={chartData}
+    width={10}
+    height={800}
+    options={{
+      scales: {
         x: {
-            
-          },
-      y: {
-        beginAtZero: true,
-        max: 100,
+
+        },
+        y: {
+          beginAtZero: true,
+          max: 100,
+        }
+      },
+      responsive: true,
+      maintainAspectRatio: false,
+      onClick: handleBarClick,
+      plugins: {
+        annotation: {
+          annotations: {
+            line1: {
+              type: 'line',
+              yMin: threshold as string | number | ((ctx: any, options: any) => any) | undefined,
+              yMax: threshold as string | number | ((ctx: any, options: any) => any) | undefined,
+              borderColor: 'rgb(255, 99, 132)',
+              borderWidth: 2,
+            }
+          }
+        }
       }
-    },
-    responsive: true,
-    maintainAspectRatio: false,
-    onClick: handleBarClick, 
-}}
-plugins={[arbitraryLines]}
-/>;
+    }}
+  />;
 }
 
 export default BarChart;

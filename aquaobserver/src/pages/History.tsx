@@ -80,6 +80,56 @@ export default function History() {
     }
   };
 
+  const createLatest = async (
+    startDate: string,
+    endDate: string
+  ): Promise<UserData> => {
+    try {
+      const response = await fetch(
+        `/api/readingsRange/${startDate}:${endDate}`,
+        {
+          headers: {
+            "ngrok-skip-browser-warning": "any-value",
+          },
+        }
+      );
+      if (!response.ok) {
+        throw new Error("Failed to fetch default data");
+      }
+
+      const jsonData = (await response.json()) as { data: ReadingData[] };
+      const labels = jsonData.data.map((item) => item.date);
+      const levels = jsonData.data.map((item) => item.meanValue);
+
+      return {
+        labels,
+        datasets: [
+          {
+            label: "Razina vode",
+            data: levels,
+            borderColor: "rgb(53, 162, 235)",
+            backgroundColor: "rgba(53, 162, 235, 0.5)",
+            borderWidth: 3,
+          },
+        ],
+      };
+    } catch (error) {
+      console.error("Error fetching default data:", (error as Error).message);
+      return {
+        labels: [],
+        datasets: [
+          {
+            label: "Razina vode",
+            data: [],
+            borderColor: "rgb(53, 162, 235)",
+            backgroundColor: "rgba(53, 162, 235, 0.5)",
+            borderWidth: 3,
+          },
+        ],
+      };
+    }
+  };
+
   const [userData, setUserData] = useState<UserData>({
     labels: [],
     datasets: [
@@ -105,6 +155,13 @@ export default function History() {
     const defaultData = await createDefaultUserData(maxStartDate, currentDate);
     setUserData(defaultData);
   };
+
+  const fetchLatest = async() => {
+    if (latestReading !== null) {
+      const latest = await createLatest(latestReading, latestReading);
+    setUserData(latest);
+    }
+  }
 
   const fetchData = async () => {
 
@@ -220,6 +277,14 @@ export default function History() {
     setValidationAlert(false);
   };
 
+  const handleLatestReadingClick = () => {
+    if (latestReading !== null) {
+      setStartDate(latestReading);
+      setEndDate(latestReading);
+      fetchLatest();
+    }
+  };
+
   return (
     <div>
       <div className="diagram">
@@ -257,7 +322,13 @@ export default function History() {
       )}
         { open && (
           <Alert variant={'danger'} onClose={handleCloseAlert} dismissible>
-            U ovom rasponu ne postoje mjerenja! Posljednje mjerenje: {latestReading}
+            U ovom rasponu ne postoje mjerenja! Posljednje mjerenje: <button type="button"
+          className="btn btn-link"  // Apply the btn-link class for a link-like appearance
+          style={{ textDecoration: 'underline', cursor: 'pointer', color: 'red' }}  // Add underline and pointer cursor
+          onClick={handleLatestReadingClick}
+>
+          {latestReading}
+        </button>
           </Alert>
         )}
       </div>
