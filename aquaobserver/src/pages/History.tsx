@@ -296,7 +296,7 @@ export default function History() {
           id="start"
           type="date"
           min="2023-11-29"
-          max={maxStartDate}
+          max={currentDate}
           value={startDate}
           onChange={(e) => setStartDate(e.target.value)}
         />
