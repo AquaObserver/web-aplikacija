@@ -77,15 +77,27 @@ function Home() {
     setLoading(true);
     getLatestReading().then((data) => {
       let level = data.waterLevel;
-      setDate(data.tstz);
+      setDate(data.tstz.split("T")[1].split(".")[0]);
       setCurrentLevel(level);
     });
     getThreshold().then((threshold) => {
       setThreshold(threshold);
-    });
-    setTimeout(() => {
       setLoading(false);
-    }, 700);
+    });
+  }
+
+  async function updateThreshold(thresh: Number) {
+    setLoading(true);
+    let data = {
+      thresholdLevel: thresh,
+    };
+    const newThresh = await postThreshold(data);
+    setThreshold(newThresh);
+    setLoading(false);
+  }
+
+  function handleShowCritical() {
+    setShowChangeThreshold((prev) => !prev);
   }
 
   useEffect(() => {
@@ -96,21 +108,6 @@ function Home() {
 
     return () => clearInterval(interval);
   }, []);
-
-  async function updateThreshold(thresh: Number) {
-    setLoading(true);
-    let data = {
-      thresholdLevel: thresh,
-    };
-    postThreshold(data).then((data) => {
-      setThreshold(data);
-      setLoading(false);
-    });
-  }
-
-  const handleShowCritical = () => {
-    setShowChangeThreshold((prev) => !prev);
-  };
 
   return (
     <>
@@ -127,9 +124,7 @@ function Home() {
                 threshold={Number(threshold)}
               ></Bucket>
             </div>
-            <div className="card-body text-center">
-              Zadnje mjerenje: {date.split("T")[1]}
-            </div>
+            <div className="card-body text-center">Zadnje mjerenje: {date}</div>
             <div className="card-body text-center">
               Kritična razina: {threshold} %
             </div>

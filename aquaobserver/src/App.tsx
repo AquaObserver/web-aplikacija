@@ -76,7 +76,15 @@ function App() {
             />
             <strong className="me-auto">{notification.title}</strong>
           </Toast.Header>
-          <Toast.Body>{notification.body}</Toast.Body>
+          <Toast.Body className="d-flex justify-content-between">
+            <div>{notification.body}</div>
+            <div>
+              <i
+                className="fa-solid fa-arrows-rotate"
+                onClick={() => window.location.reload()}
+              ></i>
+            </div>
+          </Toast.Body>
         </Toast>
       </div>
     </>

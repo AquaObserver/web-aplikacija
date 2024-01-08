@@ -20,6 +20,12 @@
   display: flex;
 }
 
+.fa-arrows-rotate {
+  cursor: pointer;
+}
+
+/* Bucket */
+
 .bucket {
   color: #7C93C3;
   width: 12rem;
@@ -59,7 +65,11 @@
   padding-top: 1%;
 }
 
+/* Calibration */
 
+.calibration {
+  width: 25rem;
+}
 
 /* ChosenDatePage */
 

@@ -9,9 +9,9 @@ interface Props {
 
 function TitleBar({ manageNotifications, notificationPermission }: Props) {
   return (
-    <Navbar bg="dark" data-bs-theme="dark">
+    <Navbar bg="dark" data-bs-theme="dark" className="text-light">
       <Container>
-        <Navbar.Brand href="/">
+        <Navbar.Brand href="/" className="text-light">
           <img
             alt=""
             src="../../public/logo.png"
@@ -21,16 +21,18 @@ function TitleBar({ manageNotifications, notificationPermission }: Props) {
           />
           AquaObserver
         </Navbar.Brand>
-        <Nav className="me-auto">
-          <Nav.Link href="/history">Povijest mjerenja</Nav.Link>
+        <Nav className="me-auto text-light">
+          <Nav.Link className="text-light" href="/history">
+            Povijest mjerenja
+          </Nav.Link>
         </Nav>
-        <Nav className="ms-auto">
+        <Nav className="ms-auto text-light">
           <Nav.Link>
             <i
               className={
                 notificationPermission === "granted"
-                  ? "fa-sharp fa-solid fa-bell"
-                  : "fa-solid fa-bell-slash"
+                  ? "fa-sharp fa-solid fa-bell text-light"
+                  : "fa-solid fa-bell-slash text-light"
               }
               title={
                 notificationPermission === "granted"
@@ -41,7 +43,10 @@ function TitleBar({ manageNotifications, notificationPermission }: Props) {
             ></i>
           </Nav.Link>
           <Nav.Link href="/calibration">
-            <i className="fa-solid fa-bucket" title="Kalibracija"></i>
+            <i
+              className="fa-solid fa-bucket text-light"
+              title="Kalibracija"
+            ></i>
           </Nav.Link>
         </Nav>
       </Container>
