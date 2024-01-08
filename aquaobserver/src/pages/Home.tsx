@@ -102,9 +102,10 @@ function Home() {
     let data = {
       thresholdLevel: thresh,
     };
-    const newThresh = await postThreshold(data);
-    setThreshold(newThresh);
-    setLoading(false);
+    postThreshold(data).then((data) => {
+      setThreshold(data);
+      setLoading(false);
+    });
   }
 
   const handleShowCritical = () => {

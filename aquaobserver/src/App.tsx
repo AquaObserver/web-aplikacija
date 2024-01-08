@@ -39,10 +39,10 @@ function App() {
         title: payload.notification.title,
         body: payload.notification.body,
       });
-      const notification = new Notification(payload.notification.title, {
-        body: payload.notification.body,
-        icon: logo,
-      });
+      // const notification = new Notification(payload.notification.title, {
+      //   body: payload.notification.body,
+      //   icon: logo,
+      // });
       console.log(payload);
     })
     .catch((err) => console.log("failed: ", err));
