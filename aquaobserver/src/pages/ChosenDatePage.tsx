@@ -37,7 +37,11 @@ export default function ChosenDatePage() {
         const data = jsonData.data; // Assuming the response has a "data" property
 
         setChartData({
-          labels: data.map((entry: { time: any }) => entry.time),
+          labels: data.map((entry: { time: any; }) => {
+            // Split entry.time by dot and take the first part (without milliseconds)
+            const timeParts = entry.time.split('.');
+            return timeParts[0];
+          }),
           datasets: [
             {
               label: "Razina vode",
