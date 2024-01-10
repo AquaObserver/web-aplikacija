@@ -4,7 +4,7 @@ import Home from "./pages/Home";
 import History from "./pages/History";
 import ChangeDatePage from "./pages/ChosenDatePage";
 import ChosenDatePage from "./pages/ChosenDatePage";
-import Calibration from "./pages/Calibration";
+import Calibration from "./components/Calibration";
 
 interface Props {
   children: React.ReactNode;
@@ -19,7 +19,6 @@ const AppRouter = (props: Props) => {
           <Route path="/" element={<Home />} />
           <Route path="/history" element={<History />} />
           <Route path="/chosen-date/:date" element={<ChosenDatePage />} />
-          <Route path="/calibration" element={<Calibration />} />
         </Routes>
       </Router>
     </>
