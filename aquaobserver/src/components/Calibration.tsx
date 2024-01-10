@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Alert, Button, Card, Modal, Spinner } from "react-bootstrap";
+import { Alert, Button, Card, Modal, Spinner, Toast } from "react-bootstrap";
 
 interface Props {
   show: boolean;
@@ -19,13 +19,14 @@ async function startCalibration() {
   return new Promise((resolve) => {
     setTimeout(() => {
       resolve("Function has waited for 5 seconds.");
-    }, 2000);
+    }, 12000);
   });
 }
 
 function Calibration({ show, onHide }: Props) {
   const [isLoading, setIsLoading] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
+  const [showToast, setShowToast] = useState(false);
 
   let calibrationInProgress = false;
 
@@ -39,6 +40,7 @@ function Calibration({ show, onHide }: Props) {
       calibrationInProgress = false;
       setIsLoading(false);
       setShowAlert(false);
+      setShowToast(true);
     }
   }
 
@@ -88,11 +90,24 @@ function Calibration({ show, onHide }: Props) {
             {isLoading ? "Kalibracija u tijeku" : "Započni kalibraciju"}
           </Button>
         </Modal.Body>
-        {showAlert && (
-          <Alert className="m-2">
-            Molimo pričekajte da se završi kalibracija
-          </Alert>
-        )}
+
+        <Alert
+          show={showAlert}
+          onClose={() => setShowAlert(false)}
+          className="m-2"
+          variant="danger"
+        >
+          Molimo pričekajte da se završi kalibracija
+        </Alert>
+
+        <Alert
+          show={showToast}
+          onClose={() => setShowToast(false)}
+          className="m-2"
+          dismissible
+        >
+          Kalibracija završena
+        </Alert>
       </Modal>
     </>
   );
