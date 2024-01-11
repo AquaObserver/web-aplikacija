@@ -19,7 +19,7 @@ async function startCalibration() {
   return new Promise((resolve) => {
     setTimeout(() => {
       resolve("Function has waited for 5 seconds.");
-    }, 12000);
+    }, 5000);
   });
 }
 
