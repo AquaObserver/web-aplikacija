@@ -5,6 +5,3 @@ Filip Vitković, Dominik Papeš
 cd aquaobserver/\
 npm i\
 npm run dev
-
-## TODO
-implementirati kalibraciju
